@@ -1,0 +1,169 @@
+@model AcxiomCRM.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Sign In - Enterprise CRM";
+    Layout = "_Layout";
+}
+
+<div class="auth-page-container">
+    <div class="auth-card">
+        <!-- Brand Header -->
+        <div class="text-center mb-4">
+            <div class="auth-badge-glow">
+                <i class="bi bi-shield-lock-fill"></i>
+            </div>
+            <h2 class="fw-bold text-white mb-1" style="letter-spacing: -0.5px;">AcxiomCRM</h2>
+            <p class="text-muted small mb-0">Role-Based Enterprise Sales & Customer Suite</p>
+        </div>
+
+        <form asp-action="Login" method="post" id="loginForm">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="ReturnUrl" />
+
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 px-3 small border-0 shadow-sm" role="alert"></div>
+
+            <!-- Email Field -->
+            <div class="mb-3 auth-input-group">
+                <label asp-for="Email" class="form-label small fw-semibold text-light">Work Email Address</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-envelope text-info"></i></span>
+                    <input asp-for="Email" id="emailInput" class="form-control" placeholder="name@company.com" autofocus autocomplete="username" />
+                </div>
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+
+            <!-- Password Field with Show/Hide Toggle -->
+            <div class="mb-3 auth-input-group">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label asp-for="Password" class="form-label small fw-semibold text-light mb-0">Password</label>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-key text-info"></i></span>
+                    <input asp-for="Password" id="passwordInput" class="form-control border-end-0" placeholder="••••••••" autocomplete="current-password" />
+                    <button type="button" id="togglePasswordBtn" class="btn btn-toggle-password" title="Show/Hide Password" aria-label="Toggle password visibility">
+                        <i class="bi bi-eye" id="togglePasswordIcon"></i>
+                    </button>
+                </div>
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <!-- Remember Me -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="form-check">
+                    <input asp-for="RememberMe" class="form-check-input" id="rememberMeCheck" />
+                    <label asp-for="RememberMe" class="form-check-label small text-muted" for="rememberMeCheck">Remember my session</label>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="submitLoginBtn" class="btn btn-crm-primary w-100 py-2 fs-6 mb-3">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Sign In to CRM Workspace
+            </button>
+        </form>
+
+        <!-- Interactive 1-Click Demo Accounts Switcher -->
+        <div class="demo-accounts-box">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="small fw-bold text-white"><i class="bi bi-lightning-charge-fill text-warning me-1"></i> Quick Demo Logins</span>
+                <span class="text-muted" style="font-size: 0.72rem;">Click to auto-fill</span>
+            </div>
+
+            <!-- Admin Button -->
+            <button type="button" class="demo-role-btn" data-email="admin@acxiomcrm.com" data-password="Admin@123456" title="Fill Admin Credentials">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-shield-shaded text-danger fs-6"></i>
+                    <div>
+                        <div class="fw-semibold text-white">Administrator</div>
+                        <div class="text-muted" style="font-size: 0.73rem;">admin@acxiomcrm.com</div>
+                    </div>
+                </div>
+                <span class="demo-role-badge badge-soft-danger">Global Scope</span>
+            </button>
+
+            <!-- Manager Button -->
+            <button type="button" class="demo-role-btn" data-email="manager@acxiomcrm.com" data-password="Manager@123456" title="Fill Manager Credentials">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-people-fill text-warning fs-6"></i>
+                    <div>
+                        <div class="fw-semibold text-white">Sales Manager</div>
+                        <div class="text-muted" style="font-size: 0.73rem;">manager@acxiomcrm.com</div>
+                    </div>
+                </div>
+                <span class="demo-role-badge badge-soft-warning">Team Scope</span>
+            </button>
+
+            <!-- Sales Executive Button -->
+            <button type="button" class="demo-role-btn" data-email="sales@acxiomcrm.com" data-password="Sales@123456" title="Fill Sales Executive Credentials">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-person-check-fill text-primary fs-6"></i>
+                    <div>
+                        <div class="fw-semibold text-white">Sales Executive</div>
+                        <div class="text-muted" style="font-size: 0.73rem;">sales@acxiomcrm.com</div>
+                    </div>
+                </div>
+                <span class="demo-role-badge badge-soft-primary">Assigned Scope</span>
+            </button>
+        </div>
+
+        <!-- Register Link -->
+        <div class="text-center mt-3 pt-2">
+            <span class="text-muted small">New team member? </span>
+            <a asp-action="Register" class="text-decoration-none fw-semibold small text-info">Create an account</a>
+        </div>
+    </div>
+
+    <!-- Security Trust Badges Footer -->
+    <div class="auth-trust-badges">
+        <span><i class="bi bi-lock-fill text-success"></i> 256-Bit SSL Encrypted</span>
+        <span><i class="bi bi-shield-check text-info"></i> Role-Based Scoping</span>
+        <span><i class="bi bi-cpu-fill text-primary"></i> ASP.NET Core Identity</span>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Password Show / Hide Toggle
+            const toggleBtn = document.getElementById('togglePasswordBtn');
+            const passwordInput = document.getElementById('passwordInput');
+            const toggleIcon = document.getElementById('togglePasswordIcon');
+
+            if (toggleBtn && passwordInput && toggleIcon) {
+                toggleBtn.addEventListener('click', function () {
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        toggleIcon.classList.remove('bi-eye');
+                        toggleIcon.classList.add('bi-eye-slash');
+                    } else {
+                        passwordInput.type = 'password';
+                        toggleIcon.classList.remove('bi-eye-slash');
+                        toggleIcon.classList.add('bi-eye');
+                    }
+                });
+            }
+
+            // Quick Demo Accounts Auto-fill
+            const demoButtons = document.querySelectorAll('.demo-role-btn');
+            const emailInput = document.getElementById('emailInput');
+
+            demoButtons.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    demoButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const email = this.getAttribute('data-email');
+                    const password = this.getAttribute('data-password');
+
+                    if (emailInput && passwordInput) {
+                        emailInput.value = email;
+                        passwordInput.value = password;
+                        // Trigger input events for validation
+                        emailInput.dispatchEvent(new Event('input', { bubbles: true }));
+                        passwordInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    }
+                });
+            });
+        });
+    </script>
+}

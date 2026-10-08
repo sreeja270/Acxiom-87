@@ -1,0 +1,57 @@
+@model AcxiomCRM.Models.Activity
+
+@{
+    ViewData["Title"] = $"Activity - {Model.Subject}";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="crm-card">
+            <div class="crm-card-header">
+                <div>
+                    <span class="badge badge-soft-primary me-2">@Model.ActivityType</span>
+                    <span class="badge badge-soft-success">@Model.Status</span>
+                </div>
+                <div>
+                    <a asp-action="Edit" asp-route-id="@Model.ActivityId" class="btn btn-sm btn-light border"><i class="bi bi-pencil me-1"></i> Edit</a>
+                    <a asp-action="Index" class="btn btn-sm btn-outline-secondary">Back to List</a>
+                </div>
+            </div>
+            <div class="crm-card-body">
+                <h4 class="fw-bold mb-3 text-white">@Model.Subject</h4>
+
+                <div class="row mb-4 p-3 bg-light rounded g-2 small">
+                    <div class="col-sm-6">
+                        <span class="text-muted">Activity Date:</span>
+                        <strong>@Model.ActivityDate.ToString("MMMM dd, yyyy HH:mm")</strong>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="text-muted">Logged By:</span>
+                        <strong>@(Model.AssignedTo?.FullName ?? "User")</strong>
+                    </div>
+                    @if (Model.Customer != null)
+                    {
+                        <div class="col-sm-6">
+                            <span class="text-muted">Related Customer:</span>
+                            <a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.CustomerId">@Model.Customer.CustomerName</a>
+                        </div>
+                    }
+                    @if (Model.Lead != null)
+                    {
+                        <div class="col-sm-6">
+                            <span class="text-muted">Related Lead:</span>
+                            <a asp-controller="Leads" asp-action="Details" asp-route-id="@Model.LeadId">@Model.Lead.LeadName</a>
+                        </div>
+                    }
+                </div>
+
+                <h6 class="fw-bold text-white">Activity Log & Details</h6>
+                <div class="p-3 border rounded mb-4" style="white-space: pre-line;">@Model.Description</div>
+
+                <div class="text-muted small">
+                    Recorded on @Model.CreatedDate.ToString("MMMM dd, yyyy HH:mm") by @(Model.CreatedBy ?? "System")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

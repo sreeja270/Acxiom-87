@@ -1,0 +1,109 @@
+@{
+    ViewData["Title"] = "CRM Analytics & Reports Hub";
+}
+
+<div class="mb-4">
+    <h2 class="fw-bold mb-1 text-white">Analytics & Enterprise Reports</h2>
+    <p class="text-muted small mb-0">Operational summaries, conversion funnels, and executive pipeline forecasting.</p>
+</div>
+
+<div class="row g-4">
+    <!-- 1. Customer Report -->
+    <div class="col-md-6 col-lg-4">
+        <div class="crm-card h-100 p-4">
+            <div class="kpi-icon-box kpi-icon-primary mb-3"><i class="bi bi-people-fill"></i></div>
+            <h5 class="fw-bold text-white mb-1">Customer Report</h5>
+            <p class="text-muted small mb-3">Portfolio breakdown by customer status, owner assignments, and active deal counts.</p>
+            <a asp-action="CustomerReport" class="btn btn-sm btn-crm-primary w-100">
+                Generate Report <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- 2. Lead Report -->
+    <div class="col-md-6 col-lg-4">
+        <div class="crm-card h-100 p-4">
+            <div class="kpi-icon-box kpi-icon-info mb-3"><i class="bi bi-funnel-fill"></i></div>
+            <h5 class="fw-bold text-white mb-1">Lead Report</h5>
+            <p class="text-muted small mb-3">Analysis of incoming inquiries across lead acquisition sources and qualification statuses.</p>
+            <a asp-action="LeadReport" class="btn btn-sm btn-crm-primary w-100">
+                Generate Report <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- 3. Follow-Up Report -->
+    <div class="col-md-6 col-lg-4">
+        <div class="crm-card h-100 p-4">
+            <div class="kpi-icon-box kpi-icon-warning mb-3"><i class="bi bi-calendar2-check-fill"></i></div>
+            <h5 class="fw-bold text-white mb-1">Follow-Up Report</h5>
+            <p class="text-muted small mb-3">Auditing overdue, completed, and upcoming follow-ups and response timeliness.</p>
+            <a asp-action="FollowUpReport" class="btn btn-sm btn-crm-primary w-100">
+                Generate Report <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- 4. Opportunity Report -->
+    <div class="col-md-6 col-lg-4">
+        <div class="crm-card h-100 p-4">
+            <div class="kpi-icon-box kpi-icon-primary mb-3"><i class="bi bi-briefcase-fill"></i></div>
+            <h5 class="fw-bold text-white mb-1">Opportunity Report</h5>
+            <p class="text-muted small mb-3">Individual deal listing with win probabilities, close dates, and stage progression.</p>
+            <a asp-action="OpportunityReport" class="btn btn-sm btn-crm-primary w-100">
+                Generate Report <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- 5. Pipeline Report -->
+    <div class="col-md-6 col-lg-4">
+        <div class="crm-card h-100 p-4">
+            <div class="kpi-icon-box kpi-icon-success mb-3"><i class="bi bi-diagram-3-fill"></i></div>
+            <h5 class="fw-bold text-white mb-1">Pipeline & Forecast Report</h5>
+            <p class="text-muted small mb-3">Stage-wise and owner-wise weighted pipeline forecasting (Amount × Probability / 100).</p>
+            <a asp-action="PipelineReport" class="btn btn-sm btn-crm-primary w-100">
+                Generate Report <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- 6. Conversion Report -->
+    <div class="col-md-6 col-lg-4">
+        <div class="crm-card h-100 p-4">
+            <div class="kpi-icon-box kpi-icon-info mb-3"><i class="bi bi-arrow-repeat"></i></div>
+            <h5 class="fw-bold text-white mb-1">Conversion Report</h5>
+            <p class="text-muted small mb-3">Lead-to-customer conversion percentages, win rates, and source effectiveness metrics.</p>
+            <a asp-action="ConversionReport" class="btn btn-sm btn-crm-primary w-100">
+                Generate Report <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- 7. User Activity Report -->
+    <div class="col-md-6 col-lg-4">
+        <div class="crm-card h-100 p-4">
+            <div class="kpi-icon-box kpi-icon-warning mb-3"><i class="bi bi-activity"></i></div>
+            <h5 class="fw-bold text-white mb-1">User Activity Report</h5>
+            <p class="text-muted small mb-3">Effort analysis tracking calls made, meetings held, emails sent, and tasks completed.</p>
+            <a asp-action="UserActivityReport" class="btn btn-sm btn-crm-primary w-100">
+                Generate Report <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- 8. Audit Report (Admin Only) -->
+    @if (User.IsInRole(AcxiomCRM.Data.DbInitializer.AdminRole))
+    {
+        <div class="col-md-6 col-lg-4">
+            <div class="crm-card h-100 p-4 border-danger">
+                <div class="kpi-icon-box kpi-icon-danger mb-3"><i class="bi bi-shield-shaded"></i></div>
+                <h5 class="fw-bold text-white mb-1">Security Audit Report</h5>
+                <p class="text-muted small mb-3">Administrative compliance auditing of logins, password resets, role changes, and record states.</p>
+                <a asp-action="AuditReport" class="btn btn-sm btn-danger w-100">
+                    Generate Report <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+    }
+</div>

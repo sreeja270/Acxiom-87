@@ -1,0 +1,169 @@
+@model AcxiomCRM.ViewModels.ActivityListViewModel
+
+@{
+    ViewData["Title"] = "Activity Management";
+}
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+    <div>
+        <h2 class="fw-bold mb-1 text-white">Interaction Activities</h2>
+        <p class="text-muted small mb-0">Log and review team interactions, executive phone calls, demos, and tasks.</p>
+    </div>
+    <a asp-action="Create" class="btn btn-crm-primary">
+        <i class="bi bi-plus-circle me-1"></i> Log Activity
+    </a>
+</div>
+
+<!-- Filter Bar -->
+<div class="crm-filter-bar mb-4">
+    <form method="get" asp-action="Index" class="row g-2 align-items-center">
+        <div class="col-md-3">
+            <div class="input-group">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control border-start-0" placeholder="Search subject or notes..." />
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <select name="typeFilter" class="form-select">
+                <option value="">All Types</option>
+                <option value="Call" selected="@(Model.TypeFilter == "Call")">Call</option>
+                <option value="Meeting" selected="@(Model.TypeFilter == "Meeting")">Meeting</option>
+                <option value="Email" selected="@(Model.TypeFilter == "Email")">Email</option>
+                <option value="Task" selected="@(Model.TypeFilter == "Task")">Task</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <select name="statusFilter" class="form-select">
+                <option value="">All Statuses</option>
+                <option value="Completed" selected="@(Model.StatusFilter == "Completed")">Completed</option>
+                <option value="Pending" selected="@(Model.StatusFilter == "Pending")">Pending</option>
+                <option value="In Progress" selected="@(Model.StatusFilter == "In Progress")">In Progress</option>
+                <option value="Cancelled" selected="@(Model.StatusFilter == "Cancelled")">Cancelled</option>
+            </select>
+        </div>
+
+        @if (!User.IsInRole(AcxiomCRM.Data.DbInitializer.SalesExecutiveRole))
+        {
+            <div class="col-md-2">
+                <select name="assignedToFilter" asp-items="Model.UsersList" class="form-select">
+                    <option value="">All Users</option>
+                </select>
+            </div>
+        }
+
+        <div class="col-md-2 d-flex gap-1">
+            <button type="submit" class="btn btn-crm-primary w-100"><i class="bi bi-funnel me-1"></i> Filter</button>
+            <a asp-action="Index" class="btn btn-outline-secondary" title="Clear"><i class="bi bi-x-lg"></i></a>
+        </div>
+    </form>
+</div>
+
+<!-- Activities Table -->
+<div class="crm-card">
+    <div class="crm-card-body p-0">
+        @if (Model.Activities.Any())
+        {
+            <div class="table-responsive">
+                <table class="table crm-table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Subject</th>
+                            <th>Related Contact</th>
+                            <th>Status</th>
+                            <th>Logged By</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var a in Model.Activities)
+                        {
+                            <tr>
+                                <td class="small fw-semibold text-nowrap">
+                                    <i class="bi bi-calendar3 me-1 text-muted"></i>
+                                    @a.ActivityDate.ToString("MMM dd, yyyy HH:mm")
+                                </td>
+                                <td>
+                                    <span class="badge badge-soft-primary">@a.ActivityType</span>
+                                </td>
+                                <td>
+                                    <div class="fw-semibold text-white">@a.Subject</div>
+                                    <div class="small text-muted text-truncate" style="max-width: 250px;">@a.Description</div>
+                                </td>
+                                <td>
+                                    @if (a.Customer != null)
+                                    {
+                                        <a asp-controller="Customers" asp-action="Details" asp-route-id="@a.CustomerId" class="small text-decoration-none">
+                                            <i class="bi bi-person me-1"></i>@a.Customer.CustomerName
+                                        </a>
+                                    }
+                                    else if (a.Lead != null)
+                                    {
+                                        <a asp-controller="Leads" asp-action="Details" asp-route-id="@a.LeadId" class="small text-decoration-none">
+                                            <i class="bi bi-funnel me-1"></i>@a.Lead.LeadName
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted small">General</span>
+                                    }
+                                </td>
+                                <td>
+                                    <span class="badge @(a.Status == "Completed" ? "badge-soft-success" : a.Status == "Pending" ? "badge-soft-warning" : "badge-soft-secondary")">@a.Status</span>
+                                </td>
+                                <td class="small">@(a.AssignedTo?.FullName ?? "User")</td>
+                                <td class="text-end">
+                                    <div class="d-inline-flex gap-1">
+                                        <a asp-action="Details" asp-route-id="@a.ActivityId" class="btn btn-action" data-bs-toggle="tooltip" title="View Details">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@a.ActivityId" class="btn btn-action" data-bs-toggle="tooltip" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form asp-action="Delete" asp-route-id="@a.ActivityId" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-action" data-confirm="Are you sure you want to delete this activity log?" data-bs-toggle="tooltip" title="Delete">
+                                                <i class="bi bi-trash text-danger"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center p-3 border-top">
+                <span class="text-muted small">
+                    Showing page <strong>@Model.Activities.PageIndex</strong> of <strong>@Model.Activities.TotalPages</strong> (Total: @Model.Activities.TotalCount)
+                </span>
+                <nav>
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item @(!Model.Activities.HasPreviousPage ? "disabled" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-pageIndex="@(Model.Activities.PageIndex - 1)" asp-route-searchTerm="@Model.SearchTerm">Previous</a>
+                        </li>
+                        <li class="page-item @(!Model.Activities.HasNextPage ? "disabled" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-pageIndex="@(Model.Activities.PageIndex + 1)" asp-route-searchTerm="@Model.SearchTerm">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        }
+        else
+        {
+            <div class="crm-empty-state">
+                <div class="crm-empty-icon"><i class="bi bi-clock-history"></i></div>
+                <h5 class="crm-empty-title">No activities recorded</h5>
+                <p class="crm-empty-desc">No interaction activities found for the selected filter or authorized scope.</p>
+                <a asp-action="Create" class="btn btn-crm-primary">
+                    <i class="bi bi-plus-lg me-1"></i> Log First Activity
+                </a>
+            </div>
+        }
+    </div>
+</div>

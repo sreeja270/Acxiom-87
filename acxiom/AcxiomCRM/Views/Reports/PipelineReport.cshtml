@@ -1,0 +1,111 @@
+@model AcxiomCRM.ViewModels.PipelineReportViewModel
+
+@{
+    ViewData["Title"] = "Pipeline & Weighted Forecast Report";
+}
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+    <div>
+        <h2 class="fw-bold mb-1 text-white">Weighted Pipeline & Forecast Report</h2>
+        <p class="text-muted small mb-0">Stage-wise and owner-wise forecasting models utilizing probability weighting (Amount × Probability / 100).</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="ExportPipelineCsv" asp-route-ownerId="@Model.AssignedToId" class="btn btn-sm btn-outline-success">
+            <i class="bi bi-filetype-csv me-1"></i> Export to CSV
+        </a>
+        <button onclick="window.print()" class="btn btn-sm btn-light border">
+            <i class="bi bi-printer me-1"></i> Print
+        </button>
+    </div>
+</div>
+
+<!-- Grand Total Banners -->
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="kpi-card d-flex align-items-center justify-content-between">
+            <div>
+                <p class="kpi-title">Grand Total Active Pipeline</p>
+                <h3 class="kpi-value text-primary">@Model.GrandTotalPipeline.ToString("C0")</h3>
+                <small class="text-muted">Total Face Value of all Open Deals</small>
+            </div>
+            <div class="kpi-icon-box kpi-icon-primary"><i class="bi bi-briefcase-fill"></i></div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="kpi-card d-flex align-items-center justify-content-between">
+            <div>
+                <p class="kpi-title">Total Weighted Pipeline Forecast</p>
+                <h3 class="kpi-value text-success">@Model.GrandTotalWeighted.ToString("C0")</h3>
+                <small class="text-success"><i class="bi bi-check-circle me-1"></i> Actuarial Expected Revenue</small>
+            </div>
+            <div class="kpi-icon-box kpi-icon-success"><i class="bi bi-calculator-fill"></i></div>
+        </div>
+    </div>
+</div>
+
+<!-- Section 1: Stage-wise Pipeline Breakdown -->
+<div class="crm-card mb-4">
+    <div class="crm-card-header">
+        <h5 class="crm-card-title"><i class="bi bi-bar-chart-steps me-2 text-primary"></i> 1. Stage-wise Pipeline Distribution</h5>
+    </div>
+    <div class="crm-card-body p-0">
+        <div class="table-responsive">
+            <table class="table crm-table align-middle">
+                <thead>
+                    <tr>
+                        <th>Pipeline Stage</th>
+                        <th>Active Deals Count</th>
+                        <th>Total Face Amount</th>
+                        <th>Weighted Forecast</th>
+                        <th>Average Deal Size</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in Model.StageBreakdown)
+                    {
+                        var avg = s.Count > 0 ? s.TotalAmount / s.Count : 0m;
+                        <tr>
+                            <td class="fw-bold"><span class="badge badge-soft-primary px-3 py-2">@s.Stage</span></td>
+                            <td class="fw-semibold">@s.Count deal(s)</td>
+                            <td class="fw-bold text-white">@s.TotalAmount.ToString("C0")</td>
+                            <td class="fw-bold text-success">@s.WeightedAmount.ToString("C0")</td>
+                            <td class="small text-muted">@avg.ToString("C0")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Section 2: Owner-wise Pipeline Breakdown -->
+<div class="crm-card">
+    <div class="crm-card-header">
+        <h5 class="crm-card-title"><i class="bi bi-people-fill me-2 text-primary"></i> 2. Owner-wise Revenue Pipeline Allocation</h5>
+    </div>
+    <div class="crm-card-body p-0">
+        <div class="table-responsive">
+            <table class="table crm-table align-middle">
+                <thead>
+                    <tr>
+                        <th>Sales Executive / Owner</th>
+                        <th>Managed Deals</th>
+                        <th>Total Pipeline Amount</th>
+                        <th>Weighted Forecast Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var o in Model.OwnerBreakdown)
+                    {
+                        <tr>
+                            <td class="fw-semibold"><i class="bi bi-person me-2 text-muted"></i>@o.OwnerName</td>
+                            <td>@o.Count</td>
+                            <td class="fw-bold text-white">@o.TotalAmount.ToString("C0")</td>
+                            <td class="fw-bold text-success">@o.WeightedAmount.ToString("C0")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

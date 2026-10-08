@@ -1,0 +1,153 @@
+@model AcxiomCRM.ViewModels.OpportunityDetailsViewModel
+
+@{
+    ViewData["Title"] = $"Opportunity - {Model.Opportunity.OpportunityName}";
+}
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+    <div class="d-flex align-items-center gap-3">
+        <a asp-action="Index" class="btn btn-sm btn-light border"><i class="bi bi-arrow-left"></i></a>
+        <div>
+            <div class="d-flex align-items-center gap-2">
+                <h2 class="fw-bold mb-0 text-white">@Model.Opportunity.OpportunityName</h2>
+                <span class="badge badge-soft-primary">@Model.Opportunity.Stage</span>
+            </div>
+            <p class="text-muted small mb-0 font-monospace">@Model.Opportunity.OpportunityCode • Customer: @Model.Opportunity.Customer?.CustomerName</p>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <a asp-controller="FollowUps" asp-action="Create" asp-route-customerId="@Model.Opportunity.CustomerId" class="btn btn-sm btn-outline-primary">
+            <i class="bi bi-calendar-plus me-1"></i> Follow-Up
+        </a>
+        <a asp-controller="Activities" asp-action="Create" asp-route-customerId="@Model.Opportunity.CustomerId" class="btn btn-sm btn-outline-secondary">
+            <i class="bi bi-plus-circle me-1"></i> Log Activity
+        </a>
+        <a asp-action="Edit" asp-route-id="@Model.Opportunity.OpportunityId" class="btn btn-sm btn-crm-primary">
+            <i class="bi bi-pencil me-1"></i> Edit Deal
+        </a>
+    </div>
+</div>
+
+<!-- Financial Highlight Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="kpi-card text-center p-3">
+            <div class="text-muted small">Opportunity Face Value</div>
+            <h3 class="fw-bold text-primary mb-0 mt-1">@Model.Opportunity.Amount.ToString("C0")</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="kpi-card text-center p-3">
+            <div class="text-muted small">Win Probability</div>
+            <h3 class="fw-bold text-white mb-0 mt-1">@Model.Opportunity.Probability%</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="kpi-card text-center p-3">
+            <div class="text-muted small">Weighted Pipeline Forecast</div>
+            <h3 class="fw-bold text-success mb-0 mt-1">@Model.Opportunity.WeightedPipeline.ToString("C0")</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div class="crm-card mb-4">
+            <div class="crm-card-header">
+                <h5 class="crm-card-title"><i class="bi bi-info-circle me-2 text-primary"></i> Deal Specifics</h5>
+            </div>
+            <div class="crm-card-body">
+                <div class="mb-3">
+                    <label class="text-muted small">Linked Customer Account</label>
+                    <div class="fw-semibold">
+                        <a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.Opportunity.CustomerId" class="text-decoration-none">
+                            @Model.Opportunity.Customer?.CustomerName
+                        </a>
+                    </div>
+                </div>
+
+                @if (Model.Opportunity.LeadId.HasValue)
+                {
+                    <div class="mb-3">
+                        <label class="text-muted small">Originating Lead</label>
+                        <div>
+                            <a asp-controller="Leads" asp-action="Details" asp-route-id="@Model.Opportunity.LeadId.Value" class="text-decoration-none">
+                                @(Model.Opportunity.Lead?.LeadName ?? $"Lead #{Model.Opportunity.LeadId.Value}")
+                            </a>
+                        </div>
+                    </div>
+                }
+
+                <div class="mb-3">
+                    <label class="text-muted small">Pipeline Stage</label>
+                    <div><span class="badge badge-soft-primary px-3 py-2">@Model.Opportunity.Stage</span></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="text-muted small">Target Expected Close Date</label>
+                    <div class="fw-medium">@Model.Opportunity.ExpectedCloseDate.ToString("MMMM dd, yyyy")</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="text-muted small">Assigned Deal Owner</label>
+                    <div class="fw-semibold">@(Model.Opportunity.AssignedTo?.FullName ?? "Unassigned")</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="text-muted small">Description & Strategy</label>
+                    <div class="small bg-light p-3 rounded">@(string.IsNullOrEmpty(Model.Opportunity.Description) ? "No notes added." : Model.Opportunity.Description)</div>
+                </div>
+
+                <hr />
+                <div class="d-flex justify-content-between small text-muted">
+                    <span>Created: @Model.Opportunity.CreatedDate.ToString("MMM dd, yyyy")</span>
+                    <span>By: @(Model.Opportunity.CreatedBy ?? "System")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side: Audit Trail -->
+    <div class="col-lg-7">
+        <div class="crm-card">
+            <div class="crm-card-header">
+                <h5 class="crm-card-title"><i class="bi bi-clock-history me-2 text-primary"></i> Deal History & Audit Trail</h5>
+            </div>
+            <div class="crm-card-body p-0">
+                @if (Model.AuditHistory.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table crm-table align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Action</th>
+                                    <th>Summary</th>
+                                    <th>Actor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var log in Model.AuditHistory)
+                                {
+                                    <tr>
+                                        <td class="small font-monospace text-muted">@log.CreatedDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                        <td><span class="badge bg-light text-white border">@log.Action</span></td>
+                                        <td class="small">@(log.Details ?? log.NewValue)</td>
+                                        <td class="small">@(log.UserEmail ?? "System")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="crm-empty-state py-4">
+                        <p class="text-muted small mb-0">No audit trail entries found.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

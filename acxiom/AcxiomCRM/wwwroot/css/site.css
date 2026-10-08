@@ -1,0 +1,925 @@
+:root {
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  /* Luminous Cyber Palette (Matching Reference Image) */
+  --crm-primary: #8b5cf6;            /* Neon Violet */
+  --crm-primary-dark: #6d28d9;
+  --crm-primary-light: rgba(139, 92, 246, 0.16);
+  --crm-secondary: #06b6d4;          /* Electric Cyan */
+  --crm-secondary-light: rgba(6, 182, 212, 0.16);
+  --crm-accent-purple: #c084fc;
+  --crm-accent-cyan: #38bdf8;
+  --crm-accent-pink: #f43f5e;
+  
+  --crm-success: #10b981;
+  --crm-success-light: rgba(16, 185, 129, 0.16);
+  --crm-warning: #f59e0b;
+  --crm-warning-light: rgba(245, 158, 11, 0.16);
+  --crm-danger: #ef4444;
+  --crm-danger-light: rgba(239, 68, 68, 0.16);
+  --crm-info: #0ea5e9;
+  --crm-info-light: rgba(14, 165, 233, 0.16);
+  
+  /* Deep Obsidian Dark Palette */
+  --crm-body-bg: #070913;
+  --crm-sidebar-bg: rgba(10, 13, 28, 0.95);
+  --crm-sidebar-text: #94a3b8;
+  --crm-sidebar-hover: rgba(139, 92, 246, 0.12);
+  --crm-sidebar-active: rgba(139, 92, 246, 0.22);
+  
+  --crm-card-bg: rgba(17, 21, 41, 0.72);
+  --crm-card-bg-solid: #111529;
+  --crm-topbar-bg: rgba(10, 13, 28, 0.85);
+  --crm-border-color: rgba(139, 92, 246, 0.2);
+  --crm-border-hover: rgba(6, 182, 212, 0.4);
+  --crm-border-radius: 16px;
+  
+  --crm-text-main: #f8fafc;
+  --crm-text-muted: #94a3b8;
+  --crm-text-subtle: #64748b;
+  
+  /* Glowing Shadows */
+  --crm-glow-primary: 0 0 25px rgba(139, 92, 246, 0.4);
+  --crm-glow-cyan: 0 0 25px rgba(6, 182, 212, 0.4);
+  --crm-shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.4);
+  --crm-shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 1px rgba(139, 92, 246, 0.3);
+  --crm-shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 2px rgba(6, 182, 212, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--crm-body-bg);
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(139, 92, 246, 0.16) 0%, transparent 45%),
+    radial-gradient(circle at 85% 10%, rgba(6, 182, 212, 0.14) 0%, transparent 45%),
+    radial-gradient(circle at 50% 75%, rgba(124, 58, 237, 0.1) 0%, transparent 55%),
+    radial-gradient(circle at 80% 85%, rgba(6, 182, 212, 0.08) 0%, transparent 45%);
+  background-attachment: fixed;
+  color: var(--crm-text-main);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========================================================
+   GLOBAL WHITE TYPOGRAPHY OVERRIDES
+   ======================================================== */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  color: #ffffff !important;
+}
+
+body, p, label, dt, dd,
+.crm-card-title, .card-title, .modal-title {
+  color: #f8fafc;
+}
+
+.text-dark {
+  color: #ffffff !important;
+}
+
+.text-secondary {
+  color: #94a3b8 !important;
+}
+
+.text-muted {
+  color: #94a3b8 !important;
+}
+
+/* Tables */
+.table, .crm-table {
+  color: #f8fafc !important;
+}
+
+.table tbody tr, .crm-table tbody tr {
+  color: #f8fafc !important;
+}
+
+.table tbody td, .crm-table tbody td {
+  color: #f8fafc !important;
+}
+
+.table thead th, .crm-table thead th {
+  color: #94a3b8 !important;
+}
+
+/* Form labels and controls */
+.form-label, label {
+  color: #f8fafc !important;
+}
+
+.form-control, .form-select {
+  color: #ffffff !important;
+}
+
+/* Breadcrumb & Links */
+.breadcrumb-item, .breadcrumb-item a, .breadcrumb-item.active {
+  color: #ffffff !important;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  color: #94a3b8 !important;
+}
+
+/* Badges */
+.badge.text-dark, .badge.bg-light, .badge.bg-light.text-dark, .badge.bg-light.text-white {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Links */
+a.text-dark, a.text-white:hover {
+  color: #38bdf8 !important;
+}
+
+
+/* ========================================================
+   LAYOUT: SIDEBAR, TOPBAR & CONTENT
+   ======================================================== */
+
+.crm-wrapper {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.crm-sidebar {
+  width: 270px;
+  background: var(--crm-sidebar-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-right: 1px solid var(--crm-border-color);
+  color: #ffffff;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  box-shadow: 4px 0 25px rgba(0, 0, 0, 0.4);
+}
+
+.crm-sidebar-header {
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.crm-logo-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #06b6d4 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1.35rem;
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.crm-brand-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #ffffff 40%, #c084fc 80%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+
+.crm-brand-subtitle {
+  font-size: 0.7rem;
+  color: #a855f7;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 700;
+}
+
+.crm-sidebar-menu {
+  padding: 1rem 0.5rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.crm-menu-header {
+  padding: 0.85rem 1.25rem 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  color: #64748b;
+}
+
+.crm-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.7rem 1.15rem;
+  color: var(--crm-sidebar-text);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 10px;
+  margin: 0.15rem 0.5rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid transparent;
+}
+
+.crm-nav-link i {
+  font-size: 1.2rem;
+  width: 22px;
+  text-align: center;
+  color: #8b5cf6;
+  transition: all 0.2s ease;
+}
+
+.crm-nav-link:hover {
+  color: #ffffff;
+  background-color: var(--crm-sidebar-hover);
+  border-color: rgba(139, 92, 246, 0.25);
+  transform: translateX(3px);
+}
+
+.crm-nav-link:hover i {
+  color: #38bdf8;
+  transform: scale(1.15);
+}
+
+.crm-nav-link.active {
+  color: #ffffff;
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.35) 0%, rgba(6, 182, 212, 0.15) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  font-weight: 600;
+  box-shadow: 0 0 18px rgba(139, 92, 246, 0.25);
+}
+
+.crm-nav-link.active i {
+  color: #38bdf8;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+}
+
+.crm-sidebar-footer {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.crm-user-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.crm-user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Main Workspace */
+.crm-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Topbar */
+.crm-topbar {
+  height: 72px;
+  background: var(--crm-topbar-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--crm-border-color);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.crm-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.crm-breadcrumb {
+  margin: 0;
+  font-size: 0.88rem;
+}
+
+.crm-breadcrumb .breadcrumb-item a {
+  color: #94a3b8;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.crm-breadcrumb .breadcrumb-item a:hover {
+  color: #38bdf8;
+}
+
+.crm-breadcrumb .breadcrumb-item.active {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.crm-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+  color: #64748b;
+}
+
+.crm-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.crm-content {
+  padding: 2rem;
+  flex: 1;
+}
+
+/* ========================================================
+   CYBER GLASS CARDS & SURFACES
+   ======================================================== */
+
+.crm-card {
+  background: var(--crm-card-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: var(--crm-border-radius);
+  border: 1px solid var(--crm-border-color);
+  box-shadow: var(--crm-shadow-md);
+  margin-bottom: 1.75rem;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+
+.crm-card:hover {
+  border-color: var(--crm-border-hover);
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.6), 0 0 20px rgba(139, 92, 246, 0.2);
+}
+
+.crm-card-header {
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.15);
+  border-top-left-radius: var(--crm-border-radius);
+  border-top-right-radius: var(--crm-border-radius);
+}
+
+.crm-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.crm-card-body {
+  padding: 1.75rem;
+}
+
+/* ========================================================
+   LUMINOUS KPI CARDS (MATCHING REFERENCE IMAGE)
+   ======================================================== */
+
+.kpi-card {
+  background: rgba(16, 20, 42, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: var(--crm-border-radius);
+  border: 1px solid rgba(139, 92, 246, 0.22);
+  padding: 1.4rem 1.6rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  opacity: 0.8;
+  transition: opacity 0.25s ease, height 0.25s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(6, 182, 212, 0.5);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(139, 92, 246, 0.25);
+}
+
+.kpi-card:hover::before {
+  height: 4px;
+  opacity: 1;
+}
+
+.kpi-title {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin: 0;
+}
+
+.kpi-value {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  margin-top: 0.4rem;
+  margin-bottom: 0.2rem;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.kpi-icon-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.kpi-card:hover .kpi-icon-box {
+  transform: scale(1.12) rotate(4deg);
+}
+
+.kpi-icon-primary { 
+  background: rgba(139, 92, 246, 0.2); 
+  color: #c084fc; 
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.35); 
+}
+.kpi-icon-info { 
+  background: rgba(6, 182, 212, 0.2); 
+  color: #38bdf8; 
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.35); 
+}
+.kpi-icon-success { 
+  background: rgba(16, 185, 129, 0.2); 
+  color: #34d399; 
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.35); 
+}
+.kpi-icon-warning { 
+  background: rgba(245, 158, 11, 0.2); 
+  color: #fbbf24; 
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.35); 
+}
+.kpi-icon-danger { 
+  background: rgba(239, 68, 68, 0.2); 
+  color: #f87171; 
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.35); 
+}
+
+/* ========================================================
+   NEON BADGE & PILL COMPONENT (MATCHING IMAGE "DURATION 06 MONTH")
+   ======================================================== */
+
+.neon-meta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem 1.15rem;
+  border-radius: 12px;
+  border: 1px solid rgba(6, 182, 212, 0.55);
+  background: rgba(6, 182, 212, 0.08);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.25), inset 0 0 10px rgba(6, 182, 212, 0.05);
+  color: #38bdf8;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(12px);
+}
+
+.neon-meta-badge i {
+  color: #38bdf8;
+  font-size: 1.1rem;
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+}
+
+.neon-meta-badge strong {
+  color: #ffffff;
+  font-weight: 800;
+}
+
+/* Headline with Radiant Gradient Glow */
+.neon-headline {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  line-height: 1.2;
+  background: linear-gradient(135deg, #ffffff 25%, #c084fc 65%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.4rem;
+}
+
+/* Floating Glass 3D Icon Mockup Tile */
+.floating-glass-tile {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 25px rgba(139, 92, 246, 0.35);
+  animation: floatSlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes floatSlow {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-8px) rotate(3deg); }
+}
+
+/* ========================================================
+   CYBER BUTTONS & INPUT CONTROLS
+   ======================================================== */
+
+.btn-crm-primary {
+  background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 50%, #06b6d4 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 0.55rem 1.35rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.45);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  text-decoration: none;
+}
+
+.btn-crm-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.6), 0 6px 20px rgba(0, 0, 0, 0.5);
+  color: #ffffff !important;
+}
+
+.btn-crm-primary:active {
+  transform: translateY(0);
+}
+
+.btn-crm-secondary, .btn-outline-secondary {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #e2e8f0 !important;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 0.55rem 1.25rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  text-decoration: none;
+}
+
+.btn-crm-secondary:hover, .btn-outline-secondary:hover {
+  background: rgba(139, 92, 246, 0.18) !important;
+  border-color: #8b5cf6 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 18px rgba(139, 92, 246, 0.35);
+  transform: translateY(-2px);
+}
+
+.btn-action {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.03);
+  transition: all 0.2s ease;
+}
+
+.btn-action:hover {
+  color: #38bdf8;
+  background: rgba(6, 182, 212, 0.15);
+  border-color: rgba(6, 182, 212, 0.4);
+  transform: scale(1.08);
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.3);
+}
+
+/* Dark Mode Form Inputs */
+.form-control, .form-select {
+  background-color: rgba(10, 13, 28, 0.75) !important;
+  border: 1px solid rgba(139, 92, 246, 0.25) !important;
+  color: #f8fafc !important;
+  border-radius: 10px;
+  padding: 0.65rem 0.95rem;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.form-control::placeholder {
+  color: #64748b;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #06b6d4 !important;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.25), 0 0 15px rgba(6, 182, 212, 0.2) !important;
+  background-color: rgba(10, 13, 28, 0.95) !important;
+}
+
+/* ========================================================
+   TABLES & LISTS
+   ======================================================== */
+
+.crm-table {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.crm-table thead th {
+  background: rgba(10, 13, 28, 0.85);
+  color: #94a3b8;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.25);
+  padding: 1rem;
+  white-space: nowrap;
+}
+
+.crm-table tbody td {
+  padding: 1.1rem 1rem;
+  vertical-align: middle;
+  color: #e2e8f0;
+  font-size: 0.92rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: transparent;
+}
+
+.crm-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.crm-table tbody tr:hover {
+  background-color: rgba(139, 92, 246, 0.08) !important;
+}
+
+/* Status Badges */
+.badge-soft-primary { 
+  background: rgba(139, 92, 246, 0.18); 
+  color: #c084fc; 
+  border: 1px solid rgba(139, 92, 246, 0.35); 
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+}
+.badge-soft-success { 
+  background: rgba(16, 185, 129, 0.18); 
+  color: #34d399; 
+  border: 1px solid rgba(16, 185, 129, 0.35); 
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+}
+.badge-soft-warning { 
+  background: rgba(245, 158, 11, 0.18); 
+  color: #fbbf24; 
+  border: 1px solid rgba(245, 158, 11, 0.35); 
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+}
+.badge-soft-danger { 
+  background: rgba(239, 68, 68, 0.18); 
+  color: #f87171; 
+  border: 1px solid rgba(239, 68, 68, 0.35); 
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+}
+.badge-soft-info { 
+  background: rgba(6, 182, 212, 0.18); 
+  color: #38bdf8; 
+  border: 1px solid rgba(6, 182, 212, 0.35); 
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+}
+.badge-soft-secondary { 
+  background: rgba(255, 255, 255, 0.08); 
+  color: #94a3b8; 
+  border: 1px solid rgba(255, 255, 255, 0.15); 
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+}
+
+.badge-role {
+  padding: 0.4rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ========================================================
+   AUTHENTICATION VIEW (CYBER SHOWCASE AESTHETIC)
+   ======================================================== */
+
+.auth-page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.3) 0%, transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(6, 182, 212, 0.25) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.18) 0%, transparent 60%),
+    #070914;
+  padding: 3rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 500px;
+  background: rgba(16, 20, 42, 0.85);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border-radius: 24px;
+  padding: 2.75rem 2.5rem;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.7),
+    0 0 35px rgba(139, 92, 246, 0.25);
+  position: relative;
+  z-index: 1;
+}
+
+.auth-badge-glow {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #06b6d4 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1.85rem;
+  margin: 0 auto 1.25rem;
+  box-shadow: 0 0 25px rgba(124, 58, 237, 0.6), inset 0 0 12px rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.demo-accounts-box {
+  background: rgba(10, 13, 28, 0.6);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 14px;
+  padding: 1.15rem;
+  margin-top: 1.5rem;
+}
+
+.demo-role-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.75rem 0.95rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: #e2e8f0;
+  font-size: 0.82rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  text-align: left;
+}
+
+.demo-role-btn:hover {
+  background: rgba(139, 92, 246, 0.16);
+  border-color: rgba(139, 92, 246, 0.4);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.25);
+}
+
+.demo-role-btn.active {
+  background: rgba(139, 92, 246, 0.25);
+  border-color: #06b6d4;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+}
+
+.btn-toggle-password {
+  background: rgba(10, 13, 28, 0.75);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-left: none;
+  color: #94a3b8;
+  padding: 0.375rem 0.85rem;
+  cursor: pointer;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  transition: color 0.15s ease;
+}
+
+.btn-toggle-password:hover {
+  color: #38bdf8;
+}
+
+/* Dropdowns & Popups */
+.dropdown-menu {
+  background-color: #0d1124 !important;
+  border: 1px solid rgba(139, 92, 246, 0.3) !important;
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(139, 92, 246, 0.2) !important;
+  padding: 0.65rem 0.5rem;
+}
+
+.dropdown-item {
+  color: #e2e8f0 !important;
+  border-radius: 8px;
+  padding: 0.55rem 0.85rem;
+  transition: all 0.15s ease;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(139, 92, 246, 0.2) !important;
+  color: #38bdf8 !important;
+}
+
+.dropdown-divider {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.35);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(6, 182, 212, 0.6);
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+  .crm-sidebar {
+    position: fixed;
+    left: -270px;
+    height: 100vh;
+  }
+  .crm-sidebar.show {
+    left: 0;
+  }
+}

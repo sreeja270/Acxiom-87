@@ -1,0 +1,209 @@
+@model AcxiomCRM.ViewModels.LeadListViewModel
+
+@{
+    ViewData["Title"] = "Lead Management";
+}
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+    <div>
+        <h2 class="fw-bold mb-1 text-white">Prospect & Lead Pipeline</h2>
+        <p class="text-muted small mb-0">Capture, nurture, qualify, and convert prospective business inquiries.</p>
+    </div>
+    <a asp-action="Create" class="btn btn-crm-primary">
+        <i class="bi bi-funnel me-1"></i> Capture New Lead
+    </a>
+</div>
+
+<!-- Search and Filters Bar -->
+<div class="crm-filter-bar mb-4">
+    <form method="get" asp-action="Index" class="row g-2 align-items-center">
+        <div class="col-md-3">
+            <div class="input-group">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control border-start-0" placeholder="Search lead, email, phone..." />
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <select name="statusFilter" class="form-select">
+                <option value="">All Statuses</option>
+                <option value="New" selected="@(Model.StatusFilter == "New")">New</option>
+                <option value="Contacted" selected="@(Model.StatusFilter == "Contacted")">Contacted</option>
+                <option value="Qualified" selected="@(Model.StatusFilter == "Qualified")">Qualified</option>
+                <option value="Converted" selected="@(Model.StatusFilter == "Converted")">Converted</option>
+                <option value="Lost" selected="@(Model.StatusFilter == "Lost")">Lost</option>
+                <option value="Unqualified" selected="@(Model.StatusFilter == "Unqualified")">Unqualified</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <select name="sourceFilter" class="form-select">
+                <option value="">All Sources</option>
+                <option value="Website" selected="@(Model.SourceFilter == "Website")">Website</option>
+                <option value="Referral" selected="@(Model.SourceFilter == "Referral")">Referral</option>
+                <option value="Cold Call" selected="@(Model.SourceFilter == "Cold Call")">Cold Call</option>
+                <option value="Event" selected="@(Model.SourceFilter == "Event")">Event</option>
+                <option value="Partner" selected="@(Model.SourceFilter == "Partner")">Partner</option>
+                <option value="Social Media" selected="@(Model.SourceFilter == "Social Media")">Social Media</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <select name="priorityFilter" class="form-select">
+                <option value="">All Priorities</option>
+                <option value="Low" selected="@(Model.PriorityFilter == "Low")">Low</option>
+                <option value="Medium" selected="@(Model.PriorityFilter == "Medium")">Medium</option>
+                <option value="High" selected="@(Model.PriorityFilter == "High")">High</option>
+                <option value="Critical" selected="@(Model.PriorityFilter == "Critical")">Critical</option>
+            </select>
+        </div>
+
+        @if (!User.IsInRole(AcxiomCRM.Data.DbInitializer.SalesExecutiveRole))
+        {
+            <div class="col-md-2">
+                <select name="assignedToFilter" asp-items="Model.UsersList" class="form-select">
+                    <option value="">All Assignees</option>
+                </select>
+            </div>
+        }
+
+        <div class="col-md-1 d-flex gap-1">
+            <button type="submit" class="btn btn-crm-primary" title="Filter"><i class="bi bi-funnel"></i></button>
+            <a asp-action="Index" class="btn btn-outline-secondary" title="Clear"><i class="bi bi-x-lg"></i></a>
+        </div>
+    </form>
+</div>
+
+<!-- Leads Data Table -->
+<div class="crm-card">
+    <div class="crm-card-body p-0">
+        @if (Model.Leads.Any())
+        {
+            <div class="table-responsive">
+                <table class="table crm-table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Lead Contact</th>
+                            <th>Company</th>
+                            <th>Source</th>
+                            <th>Priority</th>
+                            <th>Expected Value</th>
+                            <th>Status</th>
+                            <th>Owner</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Leads)
+                        {
+                            <tr>
+                                <td class="fw-bold font-monospace small text-muted">@item.LeadCode</td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.LeadId" class="fw-semibold text-decoration-none text-primary">
+                                        @item.LeadName
+                                    </a>
+                                    <div class="small text-muted"><i class="bi bi-envelope me-1"></i>@item.Email</div>
+                                </td>
+                                <td>@(item.CompanyName ?? "—")</td>
+                                <td><span class="badge badge-soft-secondary">@item.Source</span></td>
+                                <td>
+                                    @switch (item.Priority)
+                                    {
+                                        case "Critical":
+                                            <span class="badge badge-soft-danger">Critical</span>
+                                            break;
+                                        case "High":
+                                            <span class="badge badge-soft-warning">High</span>
+                                            break;
+                                        case "Medium":
+                                            <span class="badge badge-soft-info">Medium</span>
+                                            break;
+                                        default:
+                                            <span class="badge badge-soft-secondary">Low</span>
+                                            break;
+                                    }
+                                </td>
+                                <td class="fw-bold text-white">@item.ExpectedValue.ToString("C0")</td>
+                                <td>
+                                    @switch (item.Status)
+                                    {
+                                        case "New":
+                                            <span class="badge badge-soft-primary">New</span>
+                                            break;
+                                        case "Contacted":
+                                            <span class="badge badge-soft-info">Contacted</span>
+                                            break;
+                                        case "Qualified":
+                                            <span class="badge badge-soft-success">Qualified</span>
+                                            break;
+                                        case "Converted":
+                                            <span class="badge" style="background-color: #f3e8ff; color: #7e22ce;">Converted</span>
+                                            break;
+                                        case "Lost":
+                                            <span class="badge badge-soft-danger">Lost</span>
+                                            break;
+                                        default:
+                                            <span class="badge badge-soft-secondary">@item.Status</span>
+                                            break;
+                                    }
+                                </td>
+                                <td class="small">@(item.AssignedTo?.FullName ?? "Unassigned")</td>
+                                <td class="text-end">
+                                    <div class="d-inline-flex gap-1">
+                                        @if (item.Status != "Converted" && item.Status != "Lost")
+                                        {
+                                            <a asp-action="Convert" asp-route-id="@item.LeadId" class="btn btn-action text-success" data-bs-toggle="tooltip" title="Convert to Customer & Deal">
+                                                <i class="bi bi-arrow-repeat fs-6"></i>
+                                            </a>
+                                        }
+                                        <a asp-action="Details" asp-route-id="@item.LeadId" class="btn btn-action" data-bs-toggle="tooltip" title="View Details">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.LeadId" class="btn btn-action" data-bs-toggle="tooltip" title="Edit Lead">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form asp-action="Delete" asp-route-id="@item.LeadId" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-action" data-confirm="Are you sure you want to delete or mark this lead as lost?" data-bs-toggle="tooltip" title="Delete/Drop Lead">
+                                                <i class="bi bi-trash text-danger"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center p-3 border-top">
+                <span class="text-muted small">
+                    Showing page <strong>@Model.Leads.PageIndex</strong> of <strong>@Model.Leads.TotalPages</strong> (Total: @Model.Leads.TotalCount)
+                </span>
+                <nav>
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item @(!Model.Leads.HasPreviousPage ? "disabled" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-pageIndex="@(Model.Leads.PageIndex - 1)" asp-route-searchTerm="@Model.SearchTerm" asp-route-statusFilter="@Model.StatusFilter">Previous</a>
+                        </li>
+                        <li class="page-item @(!Model.Leads.HasNextPage ? "disabled" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-pageIndex="@(Model.Leads.PageIndex + 1)" asp-route-searchTerm="@Model.SearchTerm" asp-route-statusFilter="@Model.StatusFilter">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        }
+        else
+        {
+            <div class="crm-empty-state">
+                <div class="crm-empty-icon"><i class="bi bi-funnel"></i></div>
+                <h5 class="crm-empty-title">No leads in pipeline</h5>
+                <p class="crm-empty-desc">No leads matched your search filters or authorization scope.</p>
+                <a asp-action="Create" class="btn btn-crm-primary">
+                    <i class="bi bi-plus-lg me-1"></i> Capture First Lead
+                </a>
+            </div>
+        }
+    </div>
+</div>

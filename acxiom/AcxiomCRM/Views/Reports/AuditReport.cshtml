@@ -1,0 +1,76 @@
+@model AcxiomCRM.ViewModels.AuditReportViewModel
+
+@{
+    ViewData["Title"] = "Security Audit Report";
+}
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+    <div>
+        <h2 class="fw-bold mb-1 text-white">Administrative Audit & Compliance Report</h2>
+        <p class="text-muted small mb-0">Confidential security log auditing privileged operations, role changes, and data updates.</p>
+    </div>
+    <button onclick="window.print()" class="btn btn-sm btn-light border">
+        <i class="bi bi-printer me-1"></i> Print Report
+    </button>
+</div>
+
+<!-- Filters Bar -->
+<div class="crm-filter-bar mb-4">
+    <form method="get" asp-action="AuditReport" class="row g-2 align-items-center">
+        <div class="col-md-3">
+            <input type="text" name="action" value="@Model.ActionFilter" class="form-control" placeholder="Action (e.g. Login, Update, Role Change)..." />
+        </div>
+
+        <div class="col-md-3">
+            <input type="text" name="entity" value="@Model.EntityFilter" class="form-control" placeholder="Entity (e.g. User, Opportunity)..." />
+        </div>
+
+        <div class="col-md-2">
+            <input type="date" name="start" value="@(Model.StartDate?.ToString("yyyy-MM-dd"))" class="form-control" title="From Date" />
+        </div>
+
+        <div class="col-md-2">
+            <input type="date" name="end" value="@(Model.EndDate?.ToString("yyyy-MM-dd"))" class="form-control" title="To Date" />
+        </div>
+
+        <div class="col-md-2 d-flex gap-1">
+            <button type="submit" class="btn btn-danger w-100"><i class="bi bi-funnel me-1"></i> Audit Query</button>
+            <a asp-action="AuditReport" class="btn btn-outline-secondary" title="Clear"><i class="bi bi-x-lg"></i></a>
+        </div>
+    </form>
+</div>
+
+<!-- Audit Report Table -->
+<div class="crm-card border-danger">
+    <div class="crm-card-body p-0">
+        <div class="table-responsive">
+            <table class="table crm-table align-middle">
+                <thead>
+                    <tr>
+                        <th>Timestamp (UTC)</th>
+                        <th>User Account</th>
+                        <th>Action</th>
+                        <th>Entity</th>
+                        <th>Record Identifier</th>
+                        <th>Source IP</th>
+                        <th>Audit Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var a in Model.Items)
+                    {
+                        <tr>
+                            <td class="small font-monospace text-muted text-nowrap">@a.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            <td class="fw-semibold small">@(a.UserEmail ?? "System / Anonymous")</td>
+                            <td><span class="badge @(a.Action == "Login" ? "bg-success" : a.Action == "Role Change" || a.Action == "Password Reset" ? "bg-warning text-white" : a.Action == "Delete" ? "bg-danger" : "bg-primary")">@a.Action</span></td>
+                            <td><span class="badge bg-light text-white border">@a.EntityName</span></td>
+                            <td class="small font-monospace">@(a.RecordId ?? "—")</td>
+                            <td class="small font-monospace text-muted">@(a.IpAddress ?? "127.0.0.1")</td>
+                            <td class="small">@(a.Details ?? "Standard operation verified.")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

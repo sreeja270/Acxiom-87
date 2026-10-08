@@ -1,0 +1,76 @@
+@{
+    ViewData["Title"] = "Design Experiences. Shape Digital Products. - AcxiomCRM";
+}
+
+<div class="container py-5">
+    <div class="row align-items-center justify-content-center min-vh-75">
+        <div class="col-lg-10 text-center">
+            <!-- Floating Neon Icons & Duration Badge -->
+            <div class="d-flex justify-content-center align-items-center gap-3 mb-4 flex-wrap">
+                <div class="floating-glass-tile">
+                    <i class="bi bi-layers-half text-info"></i>
+                </div>
+                <div class="neon-meta-badge">
+                    <i class="bi bi-clock-history"></i>
+                    <span>DURATION <strong>06 MONTH</strong></span>
+                </div>
+                <div class="floating-glass-tile" style="animation-delay: 1.5s;">
+                    <i class="bi bi-cpu-fill text-warning"></i>
+                </div>
+            </div>
+
+            <!-- Gradient Headline matching Reference Image -->
+            <h1 class="neon-headline display-4 fw-bold mb-3">
+                Design Experiences.<br />Shape Digital Products.
+            </h1>
+            
+            <p class="lead text-muted mx-auto mb-5" style="max-width: 680px;">
+                Enterprise Role-Based CRM & Executive Sales Engine built with real-time pipeline forecasting, automated audit trails, and multi-role security scoping.
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-center gap-3 flex-wrap mb-5">
+                <a asp-controller="Dashboard" asp-action="Index" class="btn btn-crm-primary btn-lg px-4 py-3">
+                    <i class="bi bi-speedometer2 me-2"></i> Launch CRM Dashboard
+                </a>
+                <a asp-controller="Account" asp-action="Login" class="btn btn-crm-secondary btn-lg px-4 py-3">
+                    <i class="bi bi-box-arrow-in-right me-2 text-info"></i> Sign In to Portal
+                </a>
+                <a href="/swagger" target="_blank" class="btn btn-crm-secondary btn-lg px-4 py-3">
+                    <i class="bi bi-code-slash me-2 text-warning"></i> Interactive API Docs
+                </a>
+            </div>
+
+            <!-- 3 Glassmorphic Feature Preview Cards -->
+            <div class="row g-4 text-start">
+                <div class="col-md-4">
+                    <div class="crm-card h-100 p-4">
+                        <div class="kpi-icon-box kpi-icon-primary mb-3">
+                            <i class="bi bi-diagram-3-fill"></i>
+                        </div>
+                        <h5 class="fw-bold text-white mb-2">Pipeline Telemetry</h5>
+                        <p class="text-muted small mb-0">Weighted win forecasting, deal progression metrics, and funnel velocity.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="crm-card h-100 p-4">
+                        <div class="kpi-icon-box kpi-icon-info mb-3">
+                            <i class="bi bi-shield-lock-fill"></i>
+                        </div>
+                        <h5 class="fw-bold text-white mb-2">Multi-Tier RBAC</h5>
+                        <p class="text-muted small mb-0">Strict role scoping for Admins, Sales Managers, and Sales Executives.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="crm-card h-100 p-4">
+                        <div class="kpi-icon-box kpi-icon-success mb-3">
+                            <i class="bi bi-journal-check"></i>
+                        </div>
+                        <h5 class="fw-bold text-white mb-2">Automated Audit Log</h5>
+                        <p class="text-muted small mb-0">Full append-only audit tracking with IP stamps, timestamps, and state transitions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

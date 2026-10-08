@@ -1,0 +1,30 @@
+@model string
+
+@{
+    ViewData["Title"] = "Application Error";
+}
+
+<div class="row justify-content-center py-5">
+    <div class="col-md-7 text-center">
+        <div class="crm-card p-5">
+            <div class="text-danger mb-3" style="font-size: 3.5rem;">
+                <i class="bi bi-exclamation-octagon"></i>
+            </div>
+            <h2 class="fw-bold text-white mb-2">Unexpected System Error</h2>
+            <p class="text-muted mb-4">
+                An internal error occurred while processing your request. The technical details have been logged securely for diagnostic analysis.
+            </p>
+            @if (!string.IsNullOrEmpty(Model))
+            {
+                <div class="alert alert-secondary py-2 small font-monospace mb-4">
+                    Reference Request ID: <strong>@Model</strong>
+                </div>
+            }
+            <div>
+                <a asp-controller="Dashboard" asp-action="Index" class="btn btn-crm-primary">
+                    <i class="bi bi-house me-1"></i> Return to CRM Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

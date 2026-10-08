@@ -1,0 +1,26 @@
+@{
+    var code = ViewBag.StatusCode ?? 404;
+    var message = ViewBag.StatusMessage ?? "Resource not found";
+    ViewData["Title"] = $"Error {code}";
+}
+
+<div class="row justify-content-center py-5">
+    <div class="col-md-6 text-center">
+        <div class="crm-card p-5">
+            <div class="text-warning mb-3" style="font-size: 3.5rem;">
+                <i class="bi bi-question-circle"></i>
+            </div>
+            <h1 class="display-4 fw-bold text-white">@code</h1>
+            <h4 class="fw-semibold mb-3">Notice</h4>
+            <p class="text-muted mb-4">@message</p>
+            <div class="d-flex justify-content-center gap-2">
+                <a asp-controller="Dashboard" asp-action="Index" class="btn btn-crm-primary">
+                    <i class="bi bi-house me-1"></i> Dashboard
+                </a>
+                <a href="javascript:history.back()" class="btn btn-crm-secondary">
+                    <i class="bi bi-arrow-left me-1"></i> Back
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

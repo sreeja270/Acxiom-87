@@ -1,0 +1,70 @@
+@model AcxiomCRM.ViewModels.UserProfileViewModel
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="row">
+    <div class="col-lg-4 mb-4">
+        <div class="crm-card text-center p-4">
+            <div class="crm-user-avatar mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+                @(Model.FullName.FirstOrDefault().ToString().ToUpper())
+            </div>
+            <h4 class="fw-bold mb-1">@Model.FullName</h4>
+            <p class="text-muted small mb-3">@Model.Email</p>
+            <div>
+                <span class="badge bg-primary px-3 py-2">@Model.Role</span>
+                <span class="badge @(Model.IsActive ? "bg-success" : "bg-danger") px-3 py-2">@(Model.IsActive ? "Active" : "Inactive")</span>
+            </div>
+            <hr class="my-4" />
+            <div class="text-start small">
+                <div class="mb-2"><span class="text-muted">Department:</span> <strong>@(Model.Department ?? "Not Specified")</strong></div>
+                <div class="mb-2"><span class="text-muted">Member Since:</span> <strong>@Model.CreatedDate.ToString("MMMM dd, yyyy")</strong></div>
+            </div>
+            <div class="mt-4">
+                <a asp-action="ChangePassword" class="btn btn-outline-warning w-100 btn-sm">
+                    <i class="bi bi-key me-1"></i> Change Password
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="crm-card">
+            <div class="crm-card-header">
+                <h5 class="crm-card-title"><i class="bi bi-shield-check me-2 text-primary"></i> Account Information</h5>
+            </div>
+            <div class="crm-card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 text-muted">User ID</dt>
+                    <dd class="col-sm-8 font-monospace small">@Model.Id</dd>
+
+                    <dt class="col-sm-4 text-muted">Full Name</dt>
+                    <dd class="col-sm-8 fw-semibold">@Model.FullName</dd>
+
+                    <dt class="col-sm-4 text-muted">Email Address</dt>
+                    <dd class="col-sm-8">@Model.Email</dd>
+
+                    <dt class="col-sm-4 text-muted">Assigned Security Role</dt>
+                    <dd class="col-sm-8"><span class="badge bg-light text-white border">@Model.Role</span></dd>
+
+                    <dt class="col-sm-4 text-muted">Access Scope</dt>
+                    <dd class="col-sm-8">
+                        @if (Model.Role == "Admin")
+                        {
+                            <span class="text-danger fw-semibold"><i class="bi bi-globe me-1"></i> Global Administration (Full Access)</span>
+                        }
+                        else if (Model.Role == "Manager")
+                        {
+                            <span class="text-warning fw-semibold"><i class="bi bi-people me-1"></i> Management & Oversight (Team Scope)</span>
+                        }
+                        else
+                        {
+                            <span class="text-primary fw-semibold"><i class="bi bi-person me-1"></i> Sales Executive (Assigned Records Only)</span>
+                        }
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
